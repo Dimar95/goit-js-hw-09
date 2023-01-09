@@ -23,7 +23,7 @@ const options = {
     onClose
 };
 const flatpickrTimer = new flatpickr(refs.input, options);
-
+let timer = null;
 function convertMs(ms) {
   // Number of milliseconds per unit of time
   const second = 1000;
@@ -40,28 +40,47 @@ function convertMs(ms) {
   // Remaining seconds
   const seconds = Math.floor((((ms % day) % hour) % minute) / second);
 console.log(days, hours, minutes, seconds );
-
   return { days, hours, minutes, seconds };
 }
 function onClose(selectedDates) {
-      if (selectedDates[0] >= new Date()) {
-        alert("Please choose a date in the future")
-      }
-        console.log(selectedDates[0]);
-        onTimerStart(selectedDates[0])
+  if (selectedDates[0] >= new Date()) {
+      refs.start.removeAttribute("disabled", "disabled");
+  timer = selectedDates[0]
+  console.log(timer);
+  return timer
+    }
+  // console.log(selectedDates[0]);
+
+    alert("Please choose a date in the future")
+
   }
-function onTimerStart(time) {
-        // timeForTimer = ;
 
-    const intervalId = setInterval(timeForTimer(time), 1000)
-    console.log("🎅 ~ intervalId", intervalId)
-    
 
-}
-function timeForTimer(time) {
-    return time - new Date()
+const onTimeForTimer = () => {
+const timerId = setInterval(onTimerStart(), 1000)
 }
 
-function onTimerMarkup() {
+function onTimerMarkup({days, hours, minutes, seconds}) {
+  refs.days.textContent = days;
+  refs.hours.textContent = hours;
+  refs.minutes.textContent = minutes;
+  refs.seconds.textContent = seconds;
+
+}
+refs.start.addEventListener('click', () => onTimeForTimer())
+function onTimerStart() {
+
+  let timeForTimer = timer - new Date();;
+  console.log("🎅 ~ timeForTimer", timeForTimer)
+  let timeForMurkup = convertMs(timeForTimer)
+
+  onTimerMarkup(timeForMurkup);
+  
+
+
+
+
+
     
+
 }
