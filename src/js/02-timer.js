@@ -1,11 +1,9 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+
 const refs = {
     start: document.querySelector('[data-start]'),
-    timer: document.querySelector('.timer'),
-    value: document.querySelector('.value'),
-    label: document.querySelectorAll('.label'),
-    field: document.querySelector('.field'),
     days: document.querySelector('[data-days]'),
     hours: document.querySelector('[data-hours]'),
     minutes: document.querySelector('[data-minutes]'),
@@ -24,6 +22,7 @@ const options = {
 };
 const flatpickrTimer = new flatpickr(refs.input, options);
 let timer = null;
+let timerId = null;
 function convertMs(ms) {
   // Number of milliseconds per unit of time
   const second = 1000;
@@ -46,41 +45,32 @@ function onClose(selectedDates) {
   if (selectedDates[0] >= new Date()) {
       refs.start.removeAttribute("disabled", "disabled");
   timer = selectedDates[0]
-  console.log(timer);
   return timer
     }
-  // console.log(selectedDates[0]);
-
-    alert("Please choose a date in the future")
-
+    Notify.failure("Please choose a date in the future");
   }
 
-
-const onTimeForTimer = () => {
-const timerId = setInterval(onTimerStart(), 1000)
-}
-
 function onTimerMarkup({days, hours, minutes, seconds}) {
-  refs.days.textContent = days;
-  refs.hours.textContent = hours;
-  refs.minutes.textContent = minutes;
-  refs.seconds.textContent = seconds;
+  refs.days.textContent = addLeadingZero(days);
+  refs.hours.textContent = addLeadingZero(hours);
+  refs.minutes.textContent = addLeadingZero(minutes);
+  refs.seconds.textContent = addLeadingZero(seconds);
 
 }
-refs.start.addEventListener('click', () => onTimeForTimer())
-function onTimerStart() {
+refs.start.addEventListener('click', () => {
+  if (timerId) {
+    return
+  }
+ timerId = setInterval(() => onTimerStart(), 1000);
 
+})
+function onTimerStart() {
   let timeForTimer = timer - new Date();;
-  console.log("🎅 ~ timeForTimer", timeForTimer)
   let timeForMurkup = convertMs(timeForTimer)
 
   onTimerMarkup(timeForMurkup);
+}
   
-
-
-
-
-
-    
-
+function addLeadingZero(value) {
+  return String(value).padStart(2, 0)
 }
