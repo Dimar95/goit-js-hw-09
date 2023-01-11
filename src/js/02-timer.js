@@ -74,3 +74,7 @@ function onTimerStart() {
 function addLeadingZero(value) {
   return String(value).padStart(2, 0)
 }
+Notify.init({
+  timeout: 2000,
+  clickToClose: true,
+});
