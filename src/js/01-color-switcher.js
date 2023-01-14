@@ -3,13 +3,13 @@ const refs = {
     stop: document.querySelector('[data-stop]'),
     body: document.querySelector('body'),
 }
-
+timerId = null;
 refs.start.addEventListener('click', () => onBackgroundColorStart());
 refs.stop.addEventListener('click', () => onBackgroundColorStop());
 
 function onBackgroundColorStart() {
     refs.start.setAttribute("disabled", "disabled")
-    const timerId = setInterval(() => refs.body.style.backgroundColor = `${getRandomHexColor()}`, 1000)
+    timerId = setInterval(() => refs.body.style.backgroundColor = `${getRandomHexColor()}`, 1000)
 }
 
 function onBackgroundColorStop() {
