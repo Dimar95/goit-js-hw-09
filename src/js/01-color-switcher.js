@@ -3,7 +3,7 @@ const refs = {
     stop: document.querySelector('[data-stop]'),
     body: document.querySelector('body'),
 }
-timerId = null;
+let timerId = null;
 refs.start.addEventListener('click', () => onBackgroundColorStart());
 refs.stop.addEventListener('click', () => onBackgroundColorStop());
 
