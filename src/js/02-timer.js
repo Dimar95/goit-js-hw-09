@@ -44,7 +44,9 @@ function convertMs(ms) {
 function onClose(selectedDates) {
   if (selectedDates[0] >= new Date()) {
       refs.start.removeAttribute("disabled", "disabled");
+
   timer = selectedDates[0]
+
   return timer
     }
     Notify.failure("Please choose a date in the future");
@@ -61,12 +63,11 @@ refs.start.addEventListener('click', () => {
   if (timerId) {
     return
   }
- timerId = setInterval(() => onTimerStart(), 1000);
-
+ timerId = setInterval(onTimerStart, 1000);
 })
 function onTimerStart() {
-  let timeForTimer = timer - new Date();;
-  let timeForMurkup = convertMs(timeForTimer)
+  refs.input.setAttribute("disabled", "disabled");
+  let timeForMurkup = convertMs(timer - new Date())
 
   onTimerMarkup(timeForMurkup);
 }
