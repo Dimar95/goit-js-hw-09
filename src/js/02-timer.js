@@ -67,9 +67,13 @@ refs.start.addEventListener('click', () => {
 })
 function onTimerStart() {
   refs.input.setAttribute("disabled", "disabled");
-  let timeForMurkup = convertMs(timer - new Date())
+  let timeForMurkup = timer - new Date()
 
-  onTimerMarkup(timeForMurkup);
+  if (timeForMurkup > 1) {
+  onTimerMarkup(convertMs(timeForMurkup));
+  } else {
+    clearInterval(timerId)
+  }
 }
   
 function addLeadingZero(value) {
